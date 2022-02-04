@@ -79,7 +79,7 @@ def add_indicator(PATH):
     tickers = [os.path.splitext(i)[0] for i in files]
     print(f'Total Stock in {PATH} is {len(tickers)}')
 
-    for (i, ticker) in enumerate(tickers):
+    for (i, ticker) in enumerate(tickers, start=1):
         try:
             print(f'Working on [{i}/{len(tickers)}] : {ticker}')
             new_df = get_stock_df_from_csv(ticker)

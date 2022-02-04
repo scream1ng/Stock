@@ -11,13 +11,14 @@ def save_csv(folder, ticker, yf_ticker):
         df = stock.history(period="5y")
 
         if df.empty:
-            pass
+            return ticker
         else:
             the_file = folder + ticker +'.csv'
             df.to_csv(the_file)
             print(the_file, "- Saved")
     except:
         print("Couldn't Get Data for :", ticker)
+        return ticker
 
 def download_stock_history(country):
     file = country + '.csv'
@@ -29,6 +30,7 @@ def download_stock_history(country):
         print("File Doesn't Exist")
 
     number_ticker = 0
+    missing_ticker = []
     for (i, ticker) in enumerate(tickers, start=1):
         print(f'[File : {i}/{len(tickers)}]')
 
@@ -37,9 +39,15 @@ def download_stock_history(country):
         else:
             yf_ticker = ticker + '.' + country
 
-        save_csv(PATH, ticker, yf_ticker)
+        missing = save_csv(PATH, ticker, yf_ticker)
+
+        if (missing is not None):
+            missing_ticker.append(missing)
+
         number_ticker += 1
         # time.sleep(2)
+
+    print(f'Missing ticker : {missing_ticker}')
 
     print(f'Saved {number_ticker} from {len(tickers)}')
 
